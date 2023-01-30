@@ -3,6 +3,10 @@ on:
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: write
+
 jobs:
   build-alpine:
     runs-on: ubuntu-latest
