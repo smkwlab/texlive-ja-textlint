@@ -1,8 +1,8 @@
 FROM debian:11.6-slim AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /install-tl-unx
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
   perl \
   wget \
   xz-utils \
