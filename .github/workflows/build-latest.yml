@@ -28,10 +28,10 @@ jobs:
           context: ./alpine/
           push: true
           tags: |
-            paperist/alpine-texlive-ja:latest
-            ghcr.io/paperist/alpine-texlive-ja:latest
-            paperist/texlive-ja:alpine
-            ghcr.io/paperist/texlive-ja:alpine
+            smkwlab/alpine-texlive-ja:latest
+            ghcr.io/smkwlab/alpine-texlive-ja:latest
+            smkwlab/texlive-ja:alpine
+            ghcr.io/smkwlab/texlive-ja:alpine
   build-debian:
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +55,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            paperist/texlive-ja:latest
-            ghcr.io/paperist/texlive-ja:latest
-            paperist/texlive-ja:debian
-            ghcr.io/paperist/texlive-ja:debian
+            smkwlab/texlive-ja:latest
+            ghcr.io/smkwlab/texlive-ja:latest
+            smkwlab/texlive-ja:debian
+            ghcr.io/smkwlab/texlive-ja:debian
