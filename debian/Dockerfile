@@ -25,6 +25,7 @@ RUN apt-get update && \
     apt-get install -y \
       perl \
       wget \
+      git \
     && rm -rf /var/lib/apt/lists/*
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 
