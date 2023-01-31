@@ -19,10 +19,10 @@ jobs:
           context: ./alpine/
           load: true
           tags: |
-            smkwlab/texlive-ja:alpine
+            ghcr.io/smkwlab/texlive-ja-textlint:alpine
       - name: Test
         run: |
-          docker run --rm -v ${PWD}/tests:/workdir smkwlab/texlive-ja:alpine \
+          docker run --rm -v ${PWD}/tests:/workdir ghcr.io/smkwlab/texlive-ja-textlint:alpine \
             sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@v2
@@ -40,10 +40,10 @@ jobs:
           context: ./debian/
           load: true
           tags: |
-            smkwlab/texlive-ja:debian
+            ghcr.io/smkwlab/texlive-ja-textlint:debian
       - name: Test
         run: |
-          docker run --rm -v ${PWD}/tests:/workdir paperist/texlive-ja:debian \
+          docker run --rm -v ${PWD}/tests:/workdir ghcr.io/smkwlab/texlive-ja-textlint:debian \
             sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@v2
