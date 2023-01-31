@@ -24,6 +24,7 @@ COPY --from=installer /usr/local/texlive /usr/local/texlive
 RUN apk add --no-cache \
       perl \
       wget \
+      git \
       bash
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 
