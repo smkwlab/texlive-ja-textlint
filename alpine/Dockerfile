@@ -25,13 +25,14 @@ RUN apk add --no-cache \
       perl \
       wget \
       git \
+      openssh \
+      npm \
       bash
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
-RUN apk add --no-cache npm &&\
-    npm install /npm
+RUN npm install /npm
 
 WORKDIR /workdir
 CMD ["bash"]

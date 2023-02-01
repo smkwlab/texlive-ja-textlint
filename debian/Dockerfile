@@ -26,13 +26,13 @@ RUN apt-get update && \
       perl \
       wget \
       git \
+      ssh \
     && rm -rf /var/lib/apt/lists/*
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
-RUN \
-    npm install /npm
+RUN npm install /npm
 
 WORKDIR /workdir
 CMD ["bash"]
