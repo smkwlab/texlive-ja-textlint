@@ -2,10 +2,6 @@
 
 textlint 入りコンパクトな日本語向け TeXLive Docker イメージ
 
-![size:alpine](https://flat.badgen.net/docker/size/smkwlab/texive-ja-textlint/alpine/amd64?label=smkwlab/texive-ja-textlint:alpine&icon=docker)
-![size:debian](https://flat.badgen.net/docker/size/smkwlab/texive-ja-textlint/debian/amd64?label=smkwlab/texive-ja-textlint:debian&icon=docker)
-![size:debian:arm64](https://flat.badgen.net/docker/size/smkwlab/texive-ja-textlint/debian/arm64?label=smkwlab/texive-ja-textlint:debian+|+ARM64&icon=docker)
-
 ## Supported tags / タグ一覧
 
 - [`alpine`](./alpine/Dockerfile)
@@ -47,10 +43,10 @@ $ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texive-ja-textlint:latest
 
 ## License / ライセンス
 
-MIT (c) 3846masa
+MIT (c)
 
 ---
 
-Forked from [umireon/docker-texci] \(under the MIT License\).
+Forked from [Paperist/texlive-ja] \(under the MIT License\).
 
-[umireon/docker-texci]: https://github.com/umireon/docker-texci
+[Paperist/texlive-ja]: https://github.com/Paperist/texlive-ja
