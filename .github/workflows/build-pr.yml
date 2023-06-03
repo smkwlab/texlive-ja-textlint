@@ -29,6 +29,17 @@ jobs:
         with:
           name: alpine
           path: ./tests/main.pdf
+  build-alpine-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Docker image
+        uses: ./.github/actions/build/
+        with:
+          context: ./alpine/
+          platforms: linux/arm64
+
   build-debian:
     runs-on: ubuntu-latest
     steps:
