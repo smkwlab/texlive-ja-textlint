@@ -1,4 +1,4 @@
-FROM debian:11.6-slim AS installer
+FROM debian:12.1-slim@sha256:741bae561f5c2261f4cdd535e4fd4c248dec0aafc1b9a1410b3d67ad24571340 AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /install-tl-unx
 RUN apt-get update && \
