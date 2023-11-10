@@ -1,4 +1,4 @@
-FROM debian:11.7-slim AS installer
+FROM debian:12.2-slim@sha256:6cc67f78e0e8295b4fbe055eba0356648f149daf15db9179aa51fcfa9cc131cd AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /install-tl-unx
 RUN apt-get update && \
@@ -18,7 +18,7 @@ RUN tlmgr install \
   collection-latexextra \
   latexmk
 
-FROM node:14-buster-slim
+FROM node:20-bookworm-slim
 ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
 COPY --from=installer /usr/local/texlive /usr/local/texlive
 RUN apt-get update && \
