@@ -29,7 +29,6 @@ jobs:
         with:
           name: alpine
           path: ./tests/main.pdf
-
   build-debian:
     runs-on: ubuntu-latest
     steps:
