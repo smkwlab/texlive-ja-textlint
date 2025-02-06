@@ -1,8 +1,8 @@
 FROM debian:12.9-slim@sha256:40b107342c492725bc7aacbe93a49945445191ae364184a6d24fedb28172f6f7 AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /install-tl-unx
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
   perl \
   wget \
   xz-utils \
@@ -18,14 +18,22 @@ RUN tlmgr install \
   collection-latexextra \
   latexmk
 
-FROM debian:12.9-slim@sha256:40b107342c492725bc7aacbe93a49945445191ae364184a6d24fedb28172f6f7
-ENV PATH /usr/local/bin/texlive:$PATH
+FROM node:20-bookworm-slim
+ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
-RUN apt-get update \
-  && apt-get install -y \
-  perl \
-  wget \
-  && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y \
+      perl \
+      wget \
+      git \
+      ssh \
+    && rm -rf /var/lib/apt/lists/*
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
+
+WORKDIR /npm
+COPY ["package.json", "package-lock.json", "/npm"]
+RUN npm install /npm
+
+WORKDIR /workdir
 CMD ["bash"]

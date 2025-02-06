@@ -23,8 +23,17 @@ ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
 RUN apk add --no-cache \
-  bash \
-  perl \
-  wget
+      perl \
+      wget \
+      git \
+      openssh \
+      npm \
+      bash
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
+
+WORKDIR /npm
+COPY ["package.json", "package-lock.json", "/npm"]
+RUN npm install /npm
+
+WORKDIR /workdir
 CMD ["bash"]
