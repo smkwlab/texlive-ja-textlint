@@ -1,4 +1,4 @@
-FROM debian:12.2-slim@sha256:6cc67f78e0e8295b4fbe055eba0356648f149daf15db9179aa51fcfa9cc131cd AS installer
+FROM debian:12.9-slim@sha256:40b107342c492725bc7aacbe93a49945445191ae364184a6d24fedb28172f6f7 AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /install-tl-unx
 RUN apt-get update && \
@@ -20,6 +20,7 @@ RUN tlmgr install \
 
 FROM node:20-bookworm-slim
 ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
+WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
 RUN apt-get update && \
     apt-get install -y \

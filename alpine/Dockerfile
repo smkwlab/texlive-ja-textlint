@@ -1,4 +1,4 @@
-FROM alpine:3.18.4@sha256:eece025e432126ce23f223450a0326fbebde39cdf496a85d8c016293fc851978 AS installer
+FROM alpine:3.21.2@sha256:56fa17d2a7e7f168a043a2712e63aed1f8543aeafdcee47c58dcffe38ed51099 AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /install-tl-unx
 RUN apk add --no-cache \
@@ -18,8 +18,9 @@ RUN tlmgr install \
   collection-latexextra \
   latexmk
 
-FROM alpine:3.18.4@sha256:eece025e432126ce23f223450a0326fbebde39cdf496a85d8c016293fc851978
-ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
+FROM alpine:3.21.2@sha256:56fa17d2a7e7f168a043a2712e63aed1f8543aeafdcee47c58dcffe38ed51099
+ENV PATH /usr/local/bin/texlive:$PATH
+WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
 RUN apk add --no-cache \
       perl \
