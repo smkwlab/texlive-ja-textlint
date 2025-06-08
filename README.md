@@ -18,14 +18,14 @@ GitHub Container Registry からインストールできます。
 ### GitHub Container Registry
 
 ```bash
-docker pull ghcr.io/smkwlab/texive-ja-textlint:latest
-docker image tag ghcr.io/smkwlab/texive-ja-textlint:latest smkwlab/texive-ja-textlint:latest
+docker pull ghcr.io/smkwlab/texlive-ja-textlint:latest
+docker image tag ghcr.io/smkwlab/texlive-ja-textlint:latest smkwlab/texlive-ja-textlint:latest
 ```
 
 ## Usage / 使い方
 
 ```bash
-$ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texive-ja-textlint:latest \
+$ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texlive-ja-textlint:latest \
     sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex'
 ```
 
