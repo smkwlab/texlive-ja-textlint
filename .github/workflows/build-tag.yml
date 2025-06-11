@@ -79,18 +79,19 @@ jobs:
           password: ${{ secrets.CR_PAT }}
       - name: Create architecture-optimized tag manifest
         run: |
-          # Main tag: AMD64=Alpine (0.65GB), ARM64=Debian (1.55GB)
+          # Main tag: AMD64=Alpine, ARM64=Debian
           docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }} \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64 \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
-      - name: Create traditional alpine manifest
-        run: |
-          # Alpine tag: AMD64 only
-          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine \
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64
       - name: Create traditional debian manifest
         run: |
           # Debian tag: Multi-platform Debian images
           docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
+      - name: Update latest tag
+        run: |
+          # Update latest tag with architecture-optimized strategy
+          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:latest \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64 \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
