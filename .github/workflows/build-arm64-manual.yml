@@ -15,7 +15,7 @@ on:
 
 jobs:
   build-debian-arm64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm  # Native ARM64 runner
     permissions:
       contents: read
       packages: write
