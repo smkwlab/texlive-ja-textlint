@@ -23,6 +23,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/alpine-texlive-ja-textlint:${{ github.ref_name }}
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64
   build-debian:
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +42,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-amd64
   build-debian-arm64:
     runs-on: ubuntu-24.04-arm
     steps:
@@ -60,10 +61,13 @@ jobs:
           platforms: linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian
-  build-tag:
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
+  create-manifests:
     runs-on: ubuntu-latest
     needs: [build-alpine, build-debian, build-debian-arm64]
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -73,7 +77,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      - name: Create multi-platform manifest
+      - name: Create architecture-optimized tag manifest
         run: |
+          # Main tag: AMD64=Alpine (0.65GB), ARM64=Debian (1.55GB)
           docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }} \
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
+      - name: Create traditional alpine manifest
+        run: |
+          # Alpine tag: AMD64 only
+          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64
+      - name: Create traditional debian manifest
+        run: |
+          # Debian tag: Multi-platform Debian images
+          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
