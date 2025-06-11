@@ -16,7 +16,16 @@ RUN tlmgr install \
   collection-fontsrecommended \
   collection-langjapanese \
   collection-latexextra \
-  latexmk
+  latexmk \
+  jlreq \
+  luatexja \
+  fontspec \
+  unicode-math \
+  newtx \
+  stix2-otf \
+  tex-gyre \
+  haranoaji \
+  lm
 
 FROM node:20-bookworm-slim
 ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
