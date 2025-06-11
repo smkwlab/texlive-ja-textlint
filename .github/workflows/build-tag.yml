@@ -43,3 +43,33 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian
+  build-mixed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Build Alpine image (AMD64)
+        uses: ./.github/actions/build/
+        with:
+          context: ./alpine/
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-amd64
+      - name: Build Debian image (ARM64)
+        uses: ./.github/actions/build/
+        with:
+          context: ./debian/
+          platforms: linux/arm64
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64
+      - name: Create multi-platform manifest
+        run: |
+          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64

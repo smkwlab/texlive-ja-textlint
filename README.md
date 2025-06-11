@@ -10,6 +10,10 @@
 - [`latest`](./debian/Dockerfile), [`debian`](./debian/Dockerfile)
   - AMD64, ARM64 supported.
   - AMD64, ARM64 (M1 mac) に対応しています
+- [`*-mixed`](./debian/Dockerfile) (**Experimental**)
+  - AMD64: Alpine-based (compact, ~0.65GB)
+  - ARM64: Debian-based (full-featured, ~1.55GB)
+  - 実験的: AMD64 では Alpine、ARM64 では Debian を使用
 
 ## Install / インストール
 
