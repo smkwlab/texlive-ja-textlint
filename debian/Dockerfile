@@ -16,7 +16,6 @@ RUN tlmgr install \
   collection-fontsrecommended \
   collection-langjapanese \
   collection-latexextra \
-  latexmk \
   jlreq \
   luatexja \
   fontspec \
@@ -25,24 +24,23 @@ RUN tlmgr install \
   stix2-otf \
   tex-gyre \
   haranoaji \
-  lm
+  lm \
+  latexmk
 
 FROM node:20-bookworm-slim
 ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
-RUN apt-get update && \
-    apt-get install -y \
-      perl \
-      wget \
-      git \
-      ssh \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+  && apt-get install -y \
+  perl \
+  wget \
+  git \
+  ssh \
+  && rm -rf /var/lib/apt/lists/*
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
-
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
 RUN npm install /npm
-
 WORKDIR /workdir
 CMD ["bash"]
