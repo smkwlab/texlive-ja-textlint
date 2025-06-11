@@ -41,7 +41,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian
   build-mixed:
     runs-on: ubuntu-latest
@@ -70,6 +69,9 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64
       - name: Create multi-platform manifest
         run: |
+          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }} \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64
           docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-amd64 \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64

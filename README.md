@@ -4,16 +4,19 @@
 
 ## Supported tags / タグ一覧
 
+- [`latest`](./debian/Dockerfile) (**Architecture-optimized**)
+  - AMD64: Alpine-based (compact, ~0.65GB)
+  - ARM64: Debian-based (full-featured, ~1.55GB)
+  - アーキテクチャ最適化: AMD64 では Alpine、ARM64 では Debian を使用
 - [`alpine`](./alpine/Dockerfile)
   - Only AMD64 supported.
   - AMD64 のみ対応しています
-- [`latest`](./debian/Dockerfile), [`debian`](./debian/Dockerfile)
+- [`debian`](./debian/Dockerfile)
   - AMD64, ARM64 supported.
   - AMD64, ARM64 (M1 mac) に対応しています
-- [`*-mixed`](./debian/Dockerfile) (**Experimental**)
-  - AMD64: Alpine-based (compact, ~0.65GB)
-  - ARM64: Debian-based (full-featured, ~1.55GB)
-  - 実験的: AMD64 では Alpine、ARM64 では Debian を使用
+- [`*-mixed`](./debian/Dockerfile) (**Deprecated**: Use `latest` instead)
+  - Same as `latest` but will be removed in future versions
+  - `latest` と同じですが、将来のバージョンで削除予定
 
 ## Install / インストール
 
