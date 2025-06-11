@@ -42,7 +42,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian
-  build-mixed:
+  build-optimized:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,19 +59,20 @@ jobs:
           context: ./alpine/
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-amd64
+          tags: ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-amd64
       - name: Build Debian image (ARM64)
         uses: ./.github/actions/build/
         with:
           context: ./debian/
           platforms: linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64
+          tags: ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-arm64
       - name: Create multi-platform manifest
         run: |
           docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }} \
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-amd64 \
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64
-          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed \
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-amd64 \
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-mixed-arm64
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-arm64
+          # Update latest tag with multi-platform support
+          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:latest \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-arm64
