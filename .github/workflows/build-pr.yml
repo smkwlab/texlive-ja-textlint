@@ -8,45 +8,57 @@ permissions:
   contents: write
 
 jobs:
-  build-alpine:
+  build-amd64:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Build Docker image
+      - name: Build Alpine image (AMD64)
         uses: ./.github/actions/build/
         with:
           context: ./alpine/
+          platforms: linux/amd64
           load: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine
-      - name: Test
-        run: |
-          docker run --rm -v ${PWD}/tests:/workdir ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine \
-            sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
-      - name: Upload result
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: alpine
-          path: ./tests/main.pdf
-  build-debian:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Build Docker image
+          tags: texlive-ja-textlint:alpine-amd64
+      - name: Build Debian image (AMD64)  
         uses: ./.github/actions/build/
         with:
           context: ./debian/
+          platforms: linux/amd64
           load: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian
-      - name: Test
+          tags: texlive-ja-textlint:debian-amd64
+      - name: Test Alpine (AMD64)
         run: |
-          docker run --rm -v ${PWD}/tests:/workdir ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian \
+          docker run --rm -v ${PWD}/tests:/workdir texlive-ja-textlint:alpine-amd64 \
             sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
-      - name: Upload result
+      - name: Test Debian (AMD64)
+        run: |
+          docker run --rm -v ${PWD}/tests:/workdir texlive-ja-textlint:debian-amd64 \
+            sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
+      - name: Upload results (AMD64)
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: debian
+          name: amd64-results
+          path: ./tests/main.pdf
+
+  build-arm64:
+    runs-on: ubuntu-24.04-arm  # Native ARM64 runner
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Build Debian image (ARM64)
+        uses: ./.github/actions/build/
+        with:
+          context: ./debian/
+          platforms: linux/arm64
+          load: true
+          tags: texlive-ja-textlint:debian-arm64
+      - name: Test Debian (ARM64)
+        run: |
+          docker run --rm -v ${PWD}/tests:/workdir texlive-ja-textlint:debian-arm64 \
+            sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
+      - name: Upload results (ARM64)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: arm64-results
           path: ./tests/main.pdf
