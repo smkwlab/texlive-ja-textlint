@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(docker system:*)",
+      "Bash(docker pull:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh secret list:*)"
+    ],
+    "deny": []
+  }
+}
