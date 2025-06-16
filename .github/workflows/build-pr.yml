@@ -22,13 +22,19 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine
       - name: Test
         run: |
-          docker run --rm -v ${PWD}/tests:/workdir ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine \
+          # Create test directory with proper permissions for node user
+          mkdir -p ${GITHUB_WORKSPACE}/test-run
+          cp -r tests/* ${GITHUB_WORKSPACE}/test-run/
+          chmod -R 777 ${GITHUB_WORKSPACE}/test-run
+          
+          docker run --rm -v ${GITHUB_WORKSPACE}/test-run:/workdir \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine \
             sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: alpine
-          path: ./tests/main.pdf
+          path: ./test-run/main.pdf
   build-debian:
     runs-on: ubuntu-latest
     steps:
@@ -44,13 +50,19 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian
       - name: Test
         run: |
-          docker run --rm -v ${PWD}/tests:/workdir ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian \
+          # Create test directory with proper permissions for node user
+          mkdir -p ${GITHUB_WORKSPACE}/test-run
+          cp -r tests/* ${GITHUB_WORKSPACE}/test-run/
+          chmod -R 777 ${GITHUB_WORKSPACE}/test-run
+          
+          docker run --rm -v ${GITHUB_WORKSPACE}/test-run:/workdir \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian \
             sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: debian
-          path: ./tests/main.pdf
+          path: ./test-run/main.pdf
   build-debian-arm64:
     runs-on: ubuntu-24.04-arm
     steps:
@@ -66,10 +78,16 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian-arm64
       - name: Test
         run: |
-          docker run --rm -v ${PWD}/tests:/workdir ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian-arm64 \
+          # Create test directory with proper permissions for node user
+          mkdir -p ${GITHUB_WORKSPACE}/test-run
+          cp -r tests/* ${GITHUB_WORKSPACE}/test-run/
+          chmod -R 777 ${GITHUB_WORKSPACE}/test-run
+          
+          docker run --rm -v ${GITHUB_WORKSPACE}/test-run:/workdir \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian-arm64 \
             sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: debian-arm64
-          path: ./tests/main.pdf
+          path: ./test-run/main.pdf
