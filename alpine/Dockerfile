@@ -42,5 +42,14 @@ RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
 RUN npm install /npm
+
+# Add node user for DevContainer compatibility (temporary solution)
+# TODO: Phase 2 will replace with smkwlab user for ecosystem consistency
+RUN addgroup -g 1000 node && \
+    adduser -D -u 1000 -G node node && \
+    chown -R node:node /npm && \
+    chown -R node:node /workdir
+
+USER node
 WORKDIR /workdir
 CMD ["bash"]

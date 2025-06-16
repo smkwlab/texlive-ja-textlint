@@ -42,5 +42,12 @@ RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
 RUN npm install /npm
+
+# Debian version already has node user from base image (node:20-bookworm-slim)
+# Just ensure proper permissions and set as default user
+RUN chown -R node:node /npm && \
+    chown -R node:node /workdir
+
+USER node
 WORKDIR /workdir
 CMD ["bash"]
