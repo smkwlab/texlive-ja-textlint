@@ -44,8 +44,8 @@ COPY ["package.json", "package-lock.json", "/npm"]
 RUN npm install /npm
 
 # Add texuser for dedicated LaTeX environment use
-RUN addgroup -g 1000 texuser && \
-    adduser -D -u 1000 -G texuser texuser && \
+RUN addgroup -g 2000 texuser && \
+    adduser -D -u 2000 -G texuser texuser && \
     chown -R texuser:texuser /npm && \
     chown -R texuser:texuser /workdir
 
