@@ -4,13 +4,18 @@
 
 ## Supported tags / タグ一覧
 
-- [`alpine`](./alpine/Dockerfile)
-  - Only AMD64 supported.
-  - AMD64 のみ対応しています
+### Architecture-Optimized Tags (推奨)
+- [`latest`, `2025b`](./debian/Dockerfile) (**アーキテクチャ最適化**)
+  - AMD64: Alpine-based (軽量・高速)
+  - ARM64: Debian-based (互換性重視)
+  - 透明なアーキテクチャ選択: 同じタグで最適なイメージを自動取得
+
+### Traditional Tags (従来タグ)
+- [`alpine`, `2025b-alpine`](./alpine/Dockerfile)
+  - AMD64のみ対応
   - **ARM64制限理由**: TeX Live 2025がaarch64-linuxmusl用バイナリを提供していないため
-- [`latest`](./debian/Dockerfile), [`debian`](./debian/Dockerfile)
-  - AMD64, ARM64 supported.
-  - AMD64, ARM64 (M1 mac) に対応しています
+- [`debian`, `2025b-debian`](./debian/Dockerfile)
+  - AMD64, ARM64 (Apple Silicon) 対応
 
 ## Install / インストール
 
@@ -19,14 +24,22 @@ GitHub Container Registry からインストールできます。
 ### GitHub Container Registry
 
 ```bash
-docker pull ghcr.io/smkwlab/texive-ja-textlint:latest
-docker image tag ghcr.io/smkwlab/texive-ja-textlint:latest smkwlab/texive-ja-textlint:latest
+# 推奨: アーキテクチャ最適化イメージ
+docker pull ghcr.io/smkwlab/texlive-ja-textlint:2025b
+
+# 最新版（2025bと同じ）
+docker pull ghcr.io/smkwlab/texlive-ja-textlint:latest
 ```
 
 ## Usage / 使い方
 
 ```bash
-$ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texive-ja-textlint:latest \
+# アーキテクチャ最適化イメージ使用（推奨）
+$ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texlive-ja-textlint:2025b \
+    sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex'
+
+# latest タグでも同じ結果
+$ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texlive-ja-textlint:latest \
     sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex'
 ```
 
