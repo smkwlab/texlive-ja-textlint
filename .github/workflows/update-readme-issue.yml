@@ -1,0 +1,52 @@
+---
+name: Create README Update Issue
+on:
+  workflow_run:
+    workflows: ["Build tag"]
+    types:
+      - completed
+
+jobs:
+  create-readme-issue:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Extract tag name
+        id: tag
+        run: |
+          # Get the tag name from the workflow run
+          TAG_NAME="${{ github.event.workflow_run.head_branch }}"
+          TAG_NAME="${TAG_NAME#refs/tags/}"
+          echo "name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Create Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tagName = '${{ steps.tag.outputs.name }}';
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Update README.md for ${tagName} release`,
+              body: `## 📝 README.md Update Required
+
+            The \`${tagName}\` tag has been successfully built and released.
+            Please update README.md to reflect the new version.
+
+            ### Checklist
+            - [ ] Update version tags in "Supported tags" section
+            - [ ] Update Docker pull commands
+            - [ ] Update usage examples
+            - [ ] Verify all \`${tagName}\` references are consistent
+
+            ### Locations to update
+            - \`## Supported tags / タグ一覧\`
+            - \`docker pull ghcr.io/smkwlab/texlive-ja-textlint:...\`
+            - \`docker run\` examples
+
+            ### Note
+            Remember to maintain consistency across all version references.`,
+              labels: ['documentation', 'release']
+            });
