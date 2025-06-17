@@ -13,6 +13,7 @@
 ### Traditional Tags (従来タグ)
 - [`alpine`, `2025b-alpine`](./alpine/Dockerfile)
   - AMD64のみ対応
+  - **ARM64制限理由**: TeX Live 2025がaarch64-linuxmusl用バイナリを提供していないため
 - [`debian`, `2025b-debian`](./debian/Dockerfile)
   - AMD64, ARM64 (Apple Silicon) 対応
 
