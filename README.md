@@ -7,6 +7,7 @@
 - [`alpine`](./alpine/Dockerfile)
   - Only AMD64 supported.
   - AMD64 のみ対応しています
+  - **ARM64制限理由**: TeX Live 2025がaarch64-linuxmusl用バイナリを提供していないため
 - [`latest`](./debian/Dockerfile), [`debian`](./debian/Dockerfile)
   - AMD64, ARM64 supported.
   - AMD64, ARM64 (M1 mac) に対応しています
