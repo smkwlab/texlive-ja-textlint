@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-alpine, build-debian, build-debian-arm64]
     permissions:
-      contents: read
+      contents: write  # Required for release creation
       packages: write
     steps:
       - name: Checkout
@@ -95,3 +95,37 @@ jobs:
           docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:latest \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64 \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@69e5d0b # v2.0.0
+        continue-on-error: true
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: TeXLive-ja-textlint ${{ github.ref_name }}
+          body: |
+            ## 🐳 Docker Images
+            
+            ### Pull the images
+            ```bash
+            # Architecture-optimized (recommended)
+            docker pull ghcr.io/smkwlab/texlive-ja-textlint:${{ github.ref_name }}
+            
+            # Latest tag
+            docker pull ghcr.io/smkwlab/texlive-ja-textlint:latest
+            
+            # Platform-specific tags
+            docker pull ghcr.io/smkwlab/texlive-ja-textlint:${{ github.ref_name }}-alpine  # Alpine (AMD64 only)
+            docker pull ghcr.io/smkwlab/texlive-ja-textlint:${{ github.ref_name }}-debian  # Debian (Multi-arch)
+            ```
+            
+            ### Quick usage
+            ```bash
+            docker run --rm -v $PWD:/workdir ghcr.io/smkwlab/texlive-ja-textlint:${{ github.ref_name }} \
+              latexmk main.tex
+            ```
+            
+            ### What's included
+            - TeXLive 2025 with full Japanese support
+            - textlint with Japanese academic writing rules
+            - Architecture-optimized builds (Alpine for AMD64, Debian for ARM64)
+            
+          generate_release_notes: true
