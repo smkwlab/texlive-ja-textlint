@@ -43,11 +43,13 @@ WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
 RUN npm install /npm
 
-# Debian version already has node user from base image (node:20-bookworm-slim)
-# Just ensure proper permissions and set as default user
-RUN chown -R node:node /npm && \
-    chown -R node:node /workdir
+# Add texuser for dedicated LaTeX environment use
+# Use UID 2000 for future-proof isolation from system users
+RUN groupadd -g 2000 texuser && \
+    useradd -u 2000 -g texuser -m -s /bin/bash texuser && \
+    chown -R texuser:texuser /npm && \
+    chown -R texuser:texuser /workdir
 
-USER node
+USER texuser
 WORKDIR /workdir
 CMD ["bash"]
