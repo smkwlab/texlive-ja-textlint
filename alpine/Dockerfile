@@ -37,7 +37,8 @@ RUN apk add --no-cache \
   git \
   openssh \
   npm \
-  wget
+  wget \
+  sudo
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
@@ -47,7 +48,9 @@ RUN npm install /npm
 RUN addgroup -g 2000 texuser && \
     adduser -D -u 2000 -G texuser texuser && \
     chown -R texuser:texuser /npm && \
-    chown -R texuser:texuser /workdir
+    chown -R texuser:texuser /workdir && \
+    echo "texuser ALL=(ALL) NOPASSWD: /bin/chown, /bin/chmod" > /etc/sudoers.d/texuser && \
+    chmod 0440 /etc/sudoers.d/texuser
 
 USER texuser
 WORKDIR /workdir
