@@ -37,6 +37,7 @@ RUN apt-get update \
   wget \
   git \
   ssh \
+  sudo \
   && rm -rf /var/lib/apt/lists/*
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
@@ -48,7 +49,9 @@ RUN npm install /npm
 RUN groupadd -g 2000 texuser && \
     useradd -u 2000 -g texuser -m -s /bin/bash texuser && \
     chown -R texuser:texuser /npm && \
-    chown -R texuser:texuser /workdir
+    chown -R texuser:texuser /workdir && \
+    echo "texuser ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/texuser && \
+    chmod 0440 /etc/sudoers.d/texuser
 
 USER texuser
 WORKDIR /workdir
