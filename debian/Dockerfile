@@ -37,22 +37,10 @@ RUN apt-get update \
   wget \
   git \
   ssh \
-  sudo \
   && rm -rf /var/lib/apt/lists/*
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
 RUN npm install /npm
-
-# Add texuser for dedicated LaTeX environment use
-# Use UID 2000 for future-proof isolation from system users
-RUN groupadd -g 2000 texuser && \
-    useradd -u 2000 -g texuser -m -s /bin/bash texuser && \
-    chown -R texuser:texuser /npm && \
-    chown -R texuser:texuser /workdir && \
-    echo "texuser ALL=(ALL) NOPASSWD: /bin/chown, /bin/chmod" > /etc/sudoers.d/texuser && \
-    chmod 0440 /etc/sudoers.d/texuser
-
-USER texuser
 WORKDIR /workdir
 CMD ["bash"]
