@@ -24,6 +24,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/alpine-texlive-ja-textlint:${{ github.ref_name }}
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine-amd64
   build-debian:
     runs-on: ubuntu-latest
     steps:
@@ -43,6 +44,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-amd64
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian-amd64
   build-debian-arm64:
     runs-on: ubuntu-24.04-arm
     steps:
@@ -62,6 +64,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian-arm64
   create-manifests:
     runs-on: ubuntu-latest
     needs: [build-alpine, build-debian, build-debian-arm64]
@@ -94,6 +97,19 @@ jobs:
           # Update latest tag with architecture-optimized strategy
           docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:latest \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64 \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
+      - name: Update alpine tags
+        run: |
+          # Update alpine tags (version-less)
+          docker buildx imagetools create \
+            -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine \
+            -t ghcr.io/${{ github.repository_owner }}/alpine-texlive-ja-textlint:latest \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64
+      - name: Update debian tag
+        run: |
+          # Update debian tag (version-less) with multi-platform support
+          docker buildx imagetools create -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian \
+            ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-amd64 \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-debian-arm64
       - name: Create GitHub Release
         uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # v2.4.1
