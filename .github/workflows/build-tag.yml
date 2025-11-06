@@ -21,7 +21,6 @@ jobs:
           context: ./alpine/
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/alpine-texlive-ja-textlint:${{ github.ref_name }}
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine-amd64
@@ -103,7 +102,6 @@ jobs:
           # Update alpine tags (version-less)
           docker buildx imagetools create \
             -t ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine \
-            -t ghcr.io/${{ github.repository_owner }}/alpine-texlive-ja-textlint:latest \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:${{ github.ref_name }}-alpine-amd64
       - name: Update debian tag
         run: |
