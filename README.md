@@ -5,16 +5,16 @@
 ## Supported tags / タグ一覧
 
 ### 推奨イメージ
-- [`latest`, `2025h`](./debian/Dockerfile)
+- [`latest`, `2025i`](./debian/Dockerfile)
   - お使いの環境に合わせて自動的に最適なイメージを選択
   - Intel Mac/Windows: 軽量・高速版
   - Apple Silicon Mac: 互換性重視版
 
 ### 個別指定イメージ
-- [`alpine`, `2025h-alpine`](./alpine/Dockerfile)
+- [`alpine`, `2025i-alpine`](./alpine/Dockerfile)
   - Intel Mac/Windows専用（軽量・高速）
   - Apple Silicon Macでは動作しません
-- [`debian`, `2025h-debian`](./debian/Dockerfile)
+- [`debian`, `2025i-debian`](./debian/Dockerfile)
   - すべての環境で動作（互換性重視）
 
 ## Install / インストール
@@ -25,9 +25,9 @@ GitHub Container Registry からインストールできます。
 
 ```bash
 # 推奨: 環境に合わせて自動選択
-docker pull ghcr.io/smkwlab/texlive-ja-textlint:2025h
+docker pull ghcr.io/smkwlab/texlive-ja-textlint:2025i
 
-# 最新版（2025hと同じ）
+# 最新版（2025iと同じ）
 docker pull ghcr.io/smkwlab/texlive-ja-textlint:latest
 ```
 
@@ -35,7 +35,7 @@ docker pull ghcr.io/smkwlab/texlive-ja-textlint:latest
 
 ```bash
 # 推奨: 環境に合わせて自動選択
-$ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texlive-ja-textlint:2025h \
+$ docker run --rm -it -v $PWD:/workdir ghcr.io/smkwlab/texlive-ja-textlint:2025i \
     sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex'
 
 # latest タグでも同じ結果
