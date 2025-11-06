@@ -1,4 +1,4 @@
-FROM debian:12.11-slim@sha256:90522eeb7e5923ee2b871c639059537b30521272f10ca86fdbbbb2b75a8c40cd AS installer
+FROM debian:13.1-slim@sha256:a347fd7510ee31a84387619a492ad6c8eb0af2f2682b916ff3e643eb076f925a AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 WORKDIR /install-tl-unx
 RUN apt-get update && \
@@ -27,7 +27,7 @@ RUN tlmgr install \
   lm \
   latexmk
 
-FROM node:20-bookworm-slim
+FROM node:20-trixie-slim@sha256:d0b7814dbe06843af4a89b578a19945994d7fa81e0100347ef24c9690cf10ed4
 ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
