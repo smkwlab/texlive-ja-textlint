@@ -10,7 +10,6 @@
     {
       "description": "GitHub Actions version updates",
       "matchManagers": ["github-actions"],
-      "automerge": false,
       "pinDigests": true,
       "labels": ["dependencies", "github-actions"],
       "semanticCommitType": "ci"
@@ -18,7 +17,6 @@
     {
       "description": "Docker base image updates",
       "matchManagers": ["dockerfile"],
-      "automerge": false,
       "pinDigests": true,
       "labels": ["dependencies", "docker"],
       "semanticCommitType": "build"
@@ -26,7 +24,6 @@
     {
       "description": "npm dependency updates",
       "matchManagers": ["npm"],
-      "automerge": false,
       "labels": ["dependencies", "npm"],
       "rangeStrategy": "bump",
       "semanticCommitType": "chore"
