@@ -2,29 +2,34 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "dependencyDashboard": true,
   "dependencyDashboardLabels": ["dependencies"],
-  "extends": ["workarounds:all"],
+  "extends": ["config:base", "workarounds:all"],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["after 9pm on sunday"],
+  "semanticCommits": "enabled",
   "packageRules": [
     {
-      "automerge": true,
-      "labels": ["dependencies"],
-      "matchPackagePatterns": ["*"],
-      "rangeStrategy": "bump",
-      "reviewers": ["3846masa"],
-      "schedule": ["after 8:00 pm"],
-      "semanticCommitType": "chore",
-      "semanticCommits": "enabled"
-    },
-    {
-      "automerge": true,
+      "description": "GitHub Actions version updates",
       "matchManagers": ["github-actions"],
-      "pinDigests": true
+      "automerge": false,
+      "pinDigests": true,
+      "labels": ["dependencies", "github-actions"],
+      "semanticCommitType": "ci"
     },
     {
-      "automerge": true,
+      "description": "Docker base image updates",
       "matchManagers": ["dockerfile"],
-      "pinDigests": true
+      "automerge": false,
+      "pinDigests": true,
+      "labels": ["dependencies", "docker"],
+      "semanticCommitType": "build"
+    },
+    {
+      "description": "npm dependency updates",
+      "matchManagers": ["npm"],
+      "automerge": false,
+      "labels": ["dependencies", "npm"],
+      "rangeStrategy": "bump",
+      "semanticCommitType": "chore"
     }
-  ],
-  "printConfig": true,
-  "timezone": "Asia/Tokyo"
+  ]
 }
