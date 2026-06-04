@@ -29,6 +29,7 @@ RUN tlmgr install \
 
 FROM alpine:3.22.2@sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412
 ENV PATH /usr/local/bin/texlive:$PATH
+ENV TZ=Asia/Tokyo
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
 RUN apk add --no-cache \
@@ -37,7 +38,10 @@ RUN apk add --no-cache \
   git \
   openssh \
   npm \
-  wget
+  tzdata \
+  wget \
+  && cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+  && echo "Asia/Tokyo" > /etc/timezone
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
