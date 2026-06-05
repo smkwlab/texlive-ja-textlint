@@ -16,13 +16,13 @@ RUN apt-get update && \
 COPY ./texlive.profile ./
 RUN ok=0; \
     for i in 1 2 3 4 5; do \
-      if wget -nv --timeout=30 --tries=2 -O install-tl-unx.tar.gz ${TL_REPO}/install-tl-unx.tar.gz; then ok=1; break; fi; \
+      if wget -nv --timeout=30 --tries=2 -O install-tl-unx.tar.gz "${TL_REPO}/install-tl-unx.tar.gz"; then ok=1; break; fi; \
       echo "install-tl download attempt $i failed, retrying in 5s..."; \
       sleep 5; \
     done; \
     [ "$ok" = 1 ]
 RUN tar -xzf ./install-tl-unx.tar.gz --strip-components=1
-RUN ./install-tl --repository=${TL_REPO} --profile=texlive.profile
+RUN ./install-tl --repository="${TL_REPO}" --profile=texlive.profile
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 RUN tlmgr install \
   collection-fontsrecommended \
