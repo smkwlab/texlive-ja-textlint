@@ -8,7 +8,34 @@ permissions:
   contents: write
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      alpine: ${{ steps.filter.outputs.alpine }}
+      debian: ${{ steps.filter.outputs.debian }}
+    steps:
+      # On pull_request events paths-filter lists changed files via the API,
+      # so no checkout is required here.
+      - name: Detect changed variants
+        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+        id: filter
+        with:
+          filters: |
+            shared: &shared
+              - '.github/actions/build/**'
+              - '.github/workflows/build-pr.yml'
+              - 'tests/**'
+            alpine:
+              - *shared
+              - 'alpine/**'
+            debian:
+              - *shared
+              - 'debian/**'
   build-alpine:
+    needs: changes
+    if: ${{ needs.changes.outputs.alpine == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,6 +63,8 @@ jobs:
           name: alpine
           path: ./test-run/main.pdf
   build-debian:
+    needs: changes
+    if: ${{ needs.changes.outputs.debian == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,6 +93,8 @@ jobs:
           name: debian
           path: ./test-run/main.pdf
   build-debian-arm64:
+    needs: changes
+    if: ${{ needs.changes.outputs.debian == 'true' }}
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
