@@ -8,7 +8,13 @@ RUN apk add --no-cache \
   xz \
   fontconfig
 COPY ./texlive.profile ./
-RUN wget -nv https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+RUN ok=0; \
+    for i in 1 2 3 4 5; do \
+      if wget -nv --timeout=30 --tries=2 https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; then ok=1; break; fi; \
+      echo "install-tl download attempt $i failed, retrying in 5s..."; \
+      sleep 5; \
+    done; \
+    [ "$ok" = 1 ]
 RUN tar -xzf ./install-tl-unx.tar.gz --strip-components=1
 RUN ./install-tl --profile=texlive.profile
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
