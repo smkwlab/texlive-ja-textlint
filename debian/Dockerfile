@@ -1,5 +1,11 @@
 FROM debian:13.1-slim@sha256:a347fd7510ee31a84387619a492ad6c8eb0af2f2682b916ff3e643eb076f925a AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
+# Pin the TeXLive repository to a frozen historic tlnet-final mirror.
+# This makes install-tl fetch the installer tarball, texlive.tlpdb and every
+# package from a single stable host, eliminating the mirror.ctan.org
+# double-random-redirect failures (#68/#70), and freezes the TeXLive version
+# (2025) so image builds stay reproducible even after a new annual release.
+ARG TL_REPO=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2025/tlnet-final
 WORKDIR /install-tl-unx
 RUN apt-get update && \
     apt-get install -y \
@@ -10,13 +16,13 @@ RUN apt-get update && \
 COPY ./texlive.profile ./
 RUN ok=0; \
     for i in 1 2 3 4 5; do \
-      if wget -nv --timeout=30 --tries=2 -O install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; then ok=1; break; fi; \
+      if wget -nv --timeout=30 --tries=2 -O install-tl-unx.tar.gz "${TL_REPO}/install-tl-unx.tar.gz"; then ok=1; break; fi; \
       echo "install-tl download attempt $i failed, retrying in 5s..."; \
       sleep 5; \
     done; \
     [ "$ok" = 1 ]
 RUN tar -xzf ./install-tl-unx.tar.gz --strip-components=1
-RUN ./install-tl --profile=texlive.profile
+RUN ./install-tl --repository="${TL_REPO}" --profile=texlive.profile
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 RUN tlmgr install \
   collection-fontsrecommended \
