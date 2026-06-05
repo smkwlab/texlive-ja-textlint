@@ -10,7 +10,7 @@ RUN apt-get update && \
 COPY ./texlive.profile ./
 RUN ok=0; \
     for i in 1 2 3 4 5; do \
-      if wget -nv --timeout=30 --tries=2 https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; then ok=1; break; fi; \
+      if wget -nv --timeout=30 --tries=2 -O install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; then ok=1; break; fi; \
       echo "install-tl download attempt $i failed, retrying in 5s..."; \
       sleep 5; \
     done; \
