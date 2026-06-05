@@ -33,14 +33,14 @@ ENV TZ=Asia/Tokyo
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive
 RUN apt-get update \
-  && apt-get install -y \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
   perl \
   wget \
   git \
   ssh \
   tzdata \
-  && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
-  && echo "Asia/Tokyo" > /etc/timezone \
+  && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
+  && echo "$TZ" > /etc/timezone \
   && rm -rf /var/lib/apt/lists/*
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm

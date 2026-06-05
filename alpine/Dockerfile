@@ -40,8 +40,8 @@ RUN apk add --no-cache \
   npm \
   tzdata \
   wget \
-  && cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
-  && echo "Asia/Tokyo" > /etc/timezone
+  && cp /usr/share/zoneinfo/$TZ /etc/localtime \
+  && echo "$TZ" > /etc/timezone
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
