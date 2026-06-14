@@ -57,6 +57,6 @@ RUN apt-get update \
 RUN ln -sf /usr/local/texlive/*/bin/* /usr/local/bin/texlive
 WORKDIR /npm
 COPY ["package.json", "package-lock.json", "/npm"]
-RUN npm install /npm
+RUN npm ci --no-audit
 WORKDIR /workdir
 CMD ["bash"]
