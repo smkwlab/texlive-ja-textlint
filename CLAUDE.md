@@ -104,7 +104,7 @@ docker build -t test-image . && docker run --rm test-image textlint --version
 - **latex-environment**: Primary consumer
 - **sotsuron-template**: Via latex-environment  
 - **wr-template**: Weekly reports
-- **thesis-management-tools**: Automated builds
+- **student-repo-management**: Automated builds
 
 ## Detailed Documentation
 

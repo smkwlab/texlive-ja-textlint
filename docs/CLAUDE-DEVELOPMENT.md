@@ -147,7 +147,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -f alpine/Dockerfile .
 - **latex-environment**: Primary consumer of these images
 - **sotsuron-template**: Indirect dependency through latex-environment
 - **wr-template**: Uses for weekly reports
-- **thesis-management-tools**: Uses for automated builds
+- **student-repo-management**: Uses for automated builds
 
 ### Update Coordination
 ```
