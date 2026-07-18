@@ -24,11 +24,13 @@ This document covers the development workflow, architecture, and technical detai
 ## Version Strategy
 
 ### Calendar Versioning
-Tags follow TeXLive release patterns:
+Tags combine the release year with a sequential letter for updates within
+that year (`2025`, `2025a`, ..., `2025i`, `2026a`, ...):
 - `2025` - Major TeXLive 2025 release
-- `2025a` - First update with additional packages/fixes
-- `2025b` - Second update (current)
-- `2025c` - Potential third update
+- `2025a`-`2025i` - Successive updates during 2025
+- `2026a` - Current stable release (also published as `latest`)
+
+See [README.md](../README.md) for the tags currently published on the registry.
 
 ### Backward Compatibility
 - Previous major versions maintained for 1 year
