@@ -46,7 +46,7 @@ docker push ghcr.io/smkwlab/texlive-ja-textlint:2026a
 ## Version Management
 
 ### Current Tags
-- `2026a` - Current stable release (also published as `latest`)
+- `2026a` - Latest release at time of writing (also published as `latest`; see README.md for the current list)
 - `2025i` - Previous update
 - Multi-architecture: AMD64, ARM64
 
