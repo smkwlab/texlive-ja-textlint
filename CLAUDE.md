@@ -56,7 +56,7 @@ docker push ghcr.io/smkwlab/texlive-ja-textlint:2026b
 docker run --rm texlive-ja-textlint:alpine tlmgr --version
 
 # Check textlint version
-docker run --rm texlive-ja-textlint:alpine npm list -g textlint
+docker run --rm texlive-ja-textlint:alpine textlint --version
 ```
 
 ## File Structure
