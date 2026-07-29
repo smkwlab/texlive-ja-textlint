@@ -1,0 +1,16 @@
+{
+  "plugins": ["latex2e", "html"],
+  "filters": {
+    "comments": true
+  },
+  "rules": {
+    "preset-ja-technical-writing": {
+      "sentence-length": {
+        "max": 40
+      },
+      "ja-no-mixed-period": {
+        "periodMark": "。"
+      }
+    }
+  }
+}
