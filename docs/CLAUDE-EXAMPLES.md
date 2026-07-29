@@ -122,7 +122,7 @@ docker run --rm texlive-ja-textlint:alpine node --version
 docker run --rm texlive-ja-textlint:alpine npm --version
 
 # Check textlint version
-docker run --rm texlive-ja-textlint:alpine npm list -g textlint
+docker run --rm texlive-ja-textlint:alpine textlint --version
 ```
 
 ### Package Management

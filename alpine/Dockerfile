@@ -59,7 +59,10 @@ RUN tlmgr install \
   latexmk
 
 FROM alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
-ENV PATH /usr/local/bin/texlive:$PATH
+# textlint and friends are installed under /npm, not globally, so their bin
+# directory has to be on PATH for `textlint` to be callable by name (as the
+# debian variant already does).
+ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
 ENV TZ=Asia/Tokyo
 WORKDIR /workdir
 COPY --from=installer /usr/local/texlive /usr/local/texlive

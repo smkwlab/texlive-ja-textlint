@@ -43,10 +43,10 @@ docker run --rm texlive-ja-textlint:alpine fc-list | grep IPA
 ### textlint Testing
 ```bash
 # Check textlint version
-docker run --rm texlive-ja-textlint:alpine npm list -g textlint
+docker run --rm texlive-ja-textlint:alpine textlint --version
 
 # Check textlint configuration
-docker run --rm texlive-ja-textlint:alpine npx textlint --init
+docker run --rm texlive-ja-textlint:alpine textlint --init
 
 # Test textlint functionality
 cd tests && docker run --rm -v $(pwd):/workspace -w /workspace texlive-ja-textlint:alpine textlint main.tex

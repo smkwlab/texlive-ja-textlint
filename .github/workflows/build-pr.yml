@@ -56,7 +56,7 @@ jobs:
           
           docker run --rm -v ${GITHUB_WORKSPACE}/test-run:/workdir \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:alpine \
-            sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
+            sh -c 'textlint --version && latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -86,7 +86,7 @@ jobs:
           
           docker run --rm -v ${GITHUB_WORKSPACE}/test-run:/workdir \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian \
-            sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
+            sh -c 'textlint --version && latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -116,7 +116,7 @@ jobs:
           
           docker run --rm -v ${GITHUB_WORKSPACE}/test-run:/workdir \
             ghcr.io/${{ github.repository_owner }}/texlive-ja-textlint:debian-arm64 \
-            sh -c 'latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
+            sh -c 'textlint --version && latexmk -C main.tex && latexmk main.tex && latexmk -c main.tex';
       - name: Upload result
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
