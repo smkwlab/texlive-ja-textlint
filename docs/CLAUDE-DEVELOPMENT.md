@@ -25,10 +25,11 @@ This document covers the development workflow, architecture, and technical detai
 
 ### Calendar Versioning
 Tags combine the release year with a sequential letter for updates within
-that year (`2025`, `2025a`, ..., `2025i`, `2026a`, ...):
+that year (`2025`, `2025a`, ..., `2025i`, `2026a`, `2026b`, ...):
 - `2025` - Major TeXLive 2025 release
 - `2025a`-`2025i` - Successive updates during 2025
-- `2026a` - Current stable release (also published as `latest`)
+- `2026a` - First release of 2026
+- `2026b` - Current stable release (also published as `latest`)
 
 See [README.md](../README.md) for the tags currently published on the registry.
 
