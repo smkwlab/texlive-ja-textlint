@@ -1,0 +1,8 @@
+% Fixture for the CI lint check. The sentence below is deliberately longer
+% than the sentence-length limit in .textlintrc, so textlint must report
+% ja-technical-writing/sentence-length for it. If nothing is reported, the
+% latex2e plugin or the rule preset failed to load.
+\documentclass{jsarticle}
+\begin{document}
+この文は検査のために意図的に長く書かれており、設定した一文あたりの最大文字数をはっきりと超えるようにしてある。
+\end{document}
