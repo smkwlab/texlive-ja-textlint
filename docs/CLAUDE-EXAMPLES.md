@@ -16,7 +16,7 @@ docker build -f debian/Dockerfile -t texlive-ja-textlint:debian .
 docker build -f alpine/Dockerfile -t my-texlive:latest .
 
 # Multi-architecture build
-docker buildx build --platform linux/amd64,linux/arm64 -f alpine/Dockerfile -t ghcr.io/smkwlab/texlive-ja-textlint:2026b --push .
+docker buildx build --platform linux/amd64,linux/arm64 -f alpine/Dockerfile -t ghcr.io/smkwlab/texlive-ja-textlint:2026c --push .
 ```
 
 ### Running Containers
@@ -34,13 +34,13 @@ docker run --rm -v $(pwd)/my-thesis:/workspace -w /workspace texlive-ja-textlint
 ### Registry Operations
 ```bash
 # Tag for registry
-docker tag texlive-ja-textlint:alpine ghcr.io/smkwlab/texlive-ja-textlint:2026b
+docker tag texlive-ja-textlint:alpine ghcr.io/smkwlab/texlive-ja-textlint:2026c
 
 # Push to GitHub Container Registry
-docker push ghcr.io/smkwlab/texlive-ja-textlint:2026b
+docker push ghcr.io/smkwlab/texlive-ja-textlint:2026c
 
 # Pull from registry
-docker pull ghcr.io/smkwlab/texlive-ja-textlint:2026b
+docker pull ghcr.io/smkwlab/texlive-ja-textlint:2026c
 ```
 
 ## LaTeX Compilation Examples
