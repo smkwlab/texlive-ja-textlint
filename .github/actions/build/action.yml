@@ -18,11 +18,14 @@ inputs:
   tags:
     description: List of tags
     required: true
+# Each caller builds a single platform on a runner of that architecture
+# (amd64 on ubuntu-latest, arm64 on ubuntu-24.04-arm), so no emulation is
+# involved. Multi-arch tags are assembled afterwards by `docker buildx
+# imagetools create` in the create-manifests job. Building several platforms
+# in one job would need docker/setup-qemu-action here.
 runs:
   using: 'composite'
   steps:
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
       with:
