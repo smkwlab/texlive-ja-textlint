@@ -1,9 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>smkwlab/.github:latex#v1"],
-  "lockFileMaintenance": {
-    "description": "The latex preset bumps direct npm dependencies but never refreshes the lock file, so advisories in transitive packages accumulate unseen. Regenerate the lock files on the same weekly cadence as the preset's other updates.",
-    "enabled": true,
-    "schedule": ["after 9pm on sunday"]
-  }
+  "extends": ["github>smkwlab/.github:latex#v1"]
 }
