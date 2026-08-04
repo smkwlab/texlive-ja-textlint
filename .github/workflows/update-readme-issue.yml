@@ -1,4 +1,12 @@
 ---
+# リリース後、README がまだ新しいタグを名乗っていなければ更新用の issue を立てる。
+#
+# 起票を条件付きにしているのは、リリース手順が「ドキュメント更新 → タグ push」の
+# 順だから（タグが捉えるツリーの時点で記述が正しくなるようにするため）。無条件に
+# 起票すると、常に充足済みのチェックリストが毎回立つ。実際 2026a / 2026b / 2026d
+# の 3 回とも no-op で、うち 1 件は約 2 か月 open のまま放置された（#29、#131）。
+#
+# 手順を踏み忘れた場合の安全網としては残す。
 name: Create README Update Issue
 on:
   workflow_run:
@@ -11,6 +19,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       issues: write
     steps:
       - name: Extract tag name
@@ -21,7 +30,31 @@ jobs:
           TAG_NAME="${TAG_NAME#refs/tags/}"
           echo "name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
 
+      # 既定のブランチではなくタグを見る。判断したいのは「このリリースが配る
+      # ツリーの README が正しいか」であって、その後 main がどうなったかではない。
+      - name: Checkout the released tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.tag.outputs.name }}
+
+      - name: Check whether the README already names the tag
+        id: check
+        env:
+          TAG: ${{ steps.tag.outputs.name }}
+        run: |
+          # 出現の有無だけを見る。どの節が更新済みかまでは踏み込まない。
+          # 手順を踏み忘れたときに気付ければ足りる。
+          # -F はタグ名をリテラルとして扱うため。現在の命名（2026d 等）に
+          # 正規表現のメタ文字は入らないが、入った時に黙って誤判定させない。
+          if grep -qF "$TAG" README.md; then
+            echo "::notice::README.md already names ${TAG}; nothing to file"
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create Issue
+        if: steps.check.outputs.needed == 'true'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
