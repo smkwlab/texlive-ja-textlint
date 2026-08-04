@@ -44,7 +44,9 @@ jobs:
         run: |
           # 出現の有無だけを見る。どの節が更新済みかまでは踏み込まない。
           # 手順を踏み忘れたときに気付ければ足りる。
-          if grep -q "$TAG" README.md; then
+          # -F はタグ名をリテラルとして扱うため。現在の命名（2026d 等）に
+          # 正規表現のメタ文字は入らないが、入った時に黙って誤判定させない。
+          if grep -qF "$TAG" README.md; then
             echo "::notice::README.md already names ${TAG}; nothing to file"
             echo "needed=false" >> "$GITHUB_OUTPUT"
           else
