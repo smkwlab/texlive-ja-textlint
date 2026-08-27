@@ -1,4 +1,4 @@
-FROM debian:13.6-slim@sha256:3a39a0592364683e6bab97937b72cad5a8fa6dcbbee90edb3bb48c7f8e94f258 AS installer
+FROM debian:13.6-slim@sha256:d7e12182ce18b85b93007c1dedf31f2d29e01ccf3182cc4017c709b6259bc132 AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 # Pin the TeXLive repository to a frozen historic tlnet-final snapshot.
 # Serving the installer tarball, texlive.tlpdb and every package from one host
