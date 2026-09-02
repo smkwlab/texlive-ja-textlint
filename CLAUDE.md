@@ -13,7 +13,7 @@ docker build -f alpine/Dockerfile -t texlive-ja-textlint:alpine .
 docker build -f debian/Dockerfile -t texlive-ja-textlint:debian .
 
 # Multi-architecture build
-docker buildx build --platform linux/amd64,linux/arm64 -f alpine/Dockerfile -t ghcr.io/smkwlab/texlive-ja-textlint:2026d --push .
+docker buildx build --platform linux/amd64,linux/arm64 -f alpine/Dockerfile -t ghcr.io/smkwlab/texlive-ja-textlint:2026e --push .
 ```
 
 ### Test Compilation
@@ -28,8 +28,8 @@ docker run --rm -v $(pwd)/tests:/workspace -w /workspace texlive-ja-textlint:alp
 ### Registry Operations
 ```bash
 # Push to registry (maintainers only)
-docker tag texlive-ja-textlint:alpine ghcr.io/smkwlab/texlive-ja-textlint:2026d
-docker push ghcr.io/smkwlab/texlive-ja-textlint:2026d
+docker tag texlive-ja-textlint:alpine ghcr.io/smkwlab/texlive-ja-textlint:2026e
+docker push ghcr.io/smkwlab/texlive-ja-textlint:2026e
 ```
 
 ## Image Structure
@@ -46,8 +46,8 @@ docker push ghcr.io/smkwlab/texlive-ja-textlint:2026d
 ## Version Management
 
 ### Current Tags
-- `2026d` - Latest release at time of writing (also published as `latest`; see README.md for the current list)
-- `2026c` - Previous update
+- `2026e` - Latest release at time of writing (also published as `latest`; see README.md for the current list)
+- `2026d` - Previous update
 - Multi-architecture: AMD64, ARM64
 
 ### Version Checking
