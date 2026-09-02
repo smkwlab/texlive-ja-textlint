@@ -31,7 +31,8 @@ that year (`2025`, `2025a`, ..., `2025i`, `2026a`, `2026b`, ...):
 - `2026a` - First release of 2026
 - `2026b` - Successive update during 2026
 - `2026c` - Successive update during 2026
-- `2026d` - Current stable release (also published as `latest`)
+- `2026d` - Successive update during 2026
+- `2026e` - Current stable release (also published as `latest`)
 
 See [README.md](../README.md) for the tags currently published on the registry.
 
