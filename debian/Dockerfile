@@ -58,7 +58,7 @@ RUN tlmgr install \
   lm \
   latexmk
 
-FROM node:24-trixie-slim@sha256:d7b4e5c4ad20b327d7bb16fab6aecd60ac20aa50f8514eb75a2b059e89abe48e
+FROM node:24-trixie-slim@sha256:8ec5d7557396cfe32d21c3f9c13072355ceab22b584578ca4bb28af31120cffe
 ENV PATH /usr/local/bin/texlive:/npm/node_modules/.bin:$PATH
 ENV TZ=Asia/Tokyo
 WORKDIR /workdir
