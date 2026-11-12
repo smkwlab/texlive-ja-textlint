@@ -1,4 +1,4 @@
-FROM alpine:3.24.4@sha256:93b41ef40b1677fce8fcc64ff4af09daddfacf5040afde618bc46c1e2d1cc7d4 AS installer
+FROM alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf AS installer
 ENV PATH /usr/local/bin/texlive:$PATH
 # Pin the TeXLive repository to a frozen historic tlnet-final snapshot.
 # Serving the installer tarball, texlive.tlpdb and every package from one host
@@ -58,7 +58,7 @@ RUN tlmgr install \
   lm \
   latexmk
 
-FROM alpine:3.24.4@sha256:93b41ef40b1677fce8fcc64ff4af09daddfacf5040afde618bc46c1e2d1cc7d4
+FROM alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf
 # textlint and friends are installed under /npm, not globally, so their bin
 # directory has to be on PATH for `textlint` to be callable by name (as the
 # debian variant already does).
