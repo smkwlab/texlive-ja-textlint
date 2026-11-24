@@ -48,7 +48,10 @@ docker push ghcr.io/smkwlab/texlive-ja-textlint:2026e
 ### Current Tags
 - `2026e` - Latest release at time of writing (also published as `latest`; see README.md for the current list)
 - `2026d` - Previous update
-- Multi-architecture: AMD64, ARM64
+- Multi-architecture: AMD64, ARM64 -- note that `2026e` and `latest` are
+  architecture-mixed manifests: AMD64 resolves to the Alpine build (musl),
+  ARM64 to the Debian build (glibc). See `create-manifests` in
+  `.github/workflows/build-tag.yml`. Use `-debian` for glibc on both.
 
 ### Version Checking
 ```bash

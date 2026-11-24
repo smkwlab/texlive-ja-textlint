@@ -5,17 +5,21 @@
 ## Supported tags / タグ一覧
 
 ### 推奨イメージ
-- [`latest`, `2026e`](./debian/Dockerfile)
+- `latest`, `2026e`
   - お使いの環境に合わせて自動的に最適なイメージを選択
-  - Intel Mac/Windows: 軽量・高速版
-  - Apple Silicon Mac: 互換性重視版
+  - **アーキテクチャごとにベースが異なる**ので、libc に依存する話では下記を確認してください
+  - amd64（Intel Mac / Windows / Linux）: [Alpine](./alpine/Dockerfile) ベース（軽量・高速、libc は musl）
+  - arm64（Apple Silicon Mac、Graviton など）: [Debian](./debian/Dockerfile) ベース（互換性重視、libc は glibc）
+  - ベースを固定したい場合は、下記の個別指定イメージを使ってください
 
 ### 個別指定イメージ
 - [`alpine`, `2026e-alpine`](./alpine/Dockerfile)
-  - Intel Mac/Windows専用（軽量・高速）
-  - Apple Silicon Macでは動作しません
+  - Alpine ベース（libc は musl）
+  - amd64 専用（軽量・高速）
+  - arm64 では動作しません
 - [`debian`, `2026e-debian`](./debian/Dockerfile)
-  - すべての環境で動作（互換性重視）
+  - Debian ベース（libc は glibc）
+  - amd64 / arm64 の両方で動作（互換性重視）
 
 ## Install / インストール
 
