@@ -129,6 +129,11 @@ it on an AMD64 runner alone. Without the emulators registered, buildx fails on
 the platform this machine cannot run. Nothing is tagged either: a multi-platform
 build cannot be loaded into the local image store.
 
+The registration step runs a third-party image with `--privileged`, because it
+writes to the kernel's `binfmt_misc` registry for the whole host. Run it only on
+a machine you control, and skip it on a runner that already has the emulators
+(CI never needs it: each architecture builds on a runner of that architecture).
+
 ### Integration Testing
 - Test with latex-environment devcontainer
 - Verify sotsuron-template compilation
