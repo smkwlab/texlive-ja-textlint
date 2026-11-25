@@ -20,10 +20,17 @@ docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
 
 Debian only, because the Alpine variant is AMD64-only. The foreign architecture
-needs QEMU, and nothing is tagged: a multi-platform build cannot be loaded into
-the local image store. CI does not build this way either -- it builds each
-architecture on a runner of that architecture and assembles the manifests
-afterwards. See Registry Operations.
+needs QEMU, so install the emulators once before the build, or buildx fails on
+the platform it cannot run:
+
+```bash
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
+
+Nothing is tagged: a multi-platform build cannot be loaded into the local image
+store. CI does not build this way either -- it builds each architecture on a
+runner of that architecture and assembles the manifests afterwards. See Registry
+Operations.
 
 ### Running Containers
 ```bash
