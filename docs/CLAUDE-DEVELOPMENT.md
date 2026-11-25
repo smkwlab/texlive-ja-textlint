@@ -117,7 +117,7 @@ cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-alpine latex
 docker build -f debian/Dockerfile -t test-debian .
 cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-debian latexmk main.tex
 
-# Register the QEMU emulators (once per machine, before the build below).
+# Register the QEMU emulators (once per boot, before the build below).
 # WARNING: --privileged gives this container host-level access, and the
 # image is third-party. Run it only on a machine you control.
 docker run --privileged --rm tonistiigi/binfmt --install all
@@ -133,7 +133,9 @@ build cannot be loaded into the local image store.
 
 The registration step runs a third-party image with `--privileged`, because it
 writes to the kernel's `binfmt_misc` registry for the whole host -- the change
-outlives the container and affects every process on the machine. The image is
+outlives the container and affects every process on the machine, until the
+kernel's registrations are reset -- a reboot drops them, so this is a per-boot
+step, not a one-time install. The image is
 [tonistiigi/binfmt](https://github.com/tonistiigi/binfmt), maintained by a buildx
 maintainer and the one Docker's own
 [multi-platform docs](https://docs.docker.com/build/building/multi-platform/)
