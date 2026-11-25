@@ -15,14 +15,15 @@ docker build -f debian/Dockerfile -t texlive-ja-textlint:debian .
 # Build with custom tag
 docker build -f alpine/Dockerfile -t my-texlive:latest .
 
-# Check that both architectures build. Debian only -- the Alpine variant is
-# AMD64-only. Needs QEMU for the foreign architecture, and nothing is tagged
-# because a multi-platform build cannot be loaded into the local image store.
+# Check that both architectures build (Debian only)
 docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
 
-CI does not build this way: it builds each architecture on a runner of that
-architecture and assembles the manifests afterwards. See Registry Operations.
+Debian only, because the Alpine variant is AMD64-only. The foreign architecture
+needs QEMU, and nothing is tagged: a multi-platform build cannot be loaded into
+the local image store. CI does not build this way either -- it builds each
+architecture on a runner of that architecture and assembles the manifests
+afterwards. See Registry Operations.
 
 ### Running Containers
 ```bash

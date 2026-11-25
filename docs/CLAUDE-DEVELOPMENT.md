@@ -117,12 +117,13 @@ cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-alpine latex
 docker build -f debian/Dockerfile -t test-debian .
 cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-debian latexmk main.tex
 
-# Test multi-architecture compatibility. Debian only -- the Alpine variant is
-# AMD64-only, which is why CI builds it on an AMD64 runner alone. Needs QEMU
-# for the foreign architecture, and nothing is tagged because a multi-platform
-# build cannot be loaded into the local image store.
+# Test multi-architecture compatibility (Debian only)
 docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
+
+Debian only, because the Alpine variant is AMD64-only -- which is why CI builds
+it on an AMD64 runner alone. The foreign architecture needs QEMU, and nothing is
+tagged: a multi-platform build cannot be loaded into the local image store.
 
 ### Integration Testing
 - Test with latex-environment devcontainer
