@@ -117,7 +117,9 @@ cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-alpine latex
 docker build -f debian/Dockerfile -t test-debian .
 cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-debian latexmk main.tex
 
-# Register the QEMU emulators (once per machine, before the build below)
+# Register the QEMU emulators (once per machine, before the build below).
+# WARNING: --privileged gives this container host-level access, and the
+# image is third-party. Run it only on a machine you control.
 docker run --privileged --rm tonistiigi/binfmt --install all
 
 # Test multi-architecture compatibility (Debian only)
