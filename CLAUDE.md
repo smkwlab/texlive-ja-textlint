@@ -14,8 +14,8 @@ docker build -f debian/Dockerfile -t texlive-ja-textlint:debian .
 ```
 
 Published images are built by CI, never from a local build -- see Registry
-Operations below. For a local multi-architecture check, see "Local Testing" in
-[docs/CLAUDE-DEVELOPMENT.md](docs/CLAUDE-DEVELOPMENT.md).
+Operations below. For a local multi-architecture check, see
+[Local Testing](docs/CLAUDE-DEVELOPMENT.md#local-testing).
 
 ### Test Compilation
 ```bash
