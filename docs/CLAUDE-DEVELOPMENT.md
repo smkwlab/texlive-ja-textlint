@@ -117,20 +117,17 @@ cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-alpine latex
 docker build -f debian/Dockerfile -t test-debian .
 cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-debian latexmk main.tex
 
+# Register the QEMU emulators (once per machine, before the build below)
+docker run --privileged --rm tonistiigi/binfmt --install all
+
 # Test multi-architecture compatibility (Debian only)
 docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
 
 Debian only, because the Alpine variant is AMD64-only -- which is why CI builds
-it on an AMD64 runner alone. The foreign architecture needs QEMU, so install the
-emulators once before the build, or buildx fails on the platform it cannot run:
-
-```bash
-docker run --privileged --rm tonistiigi/binfmt --install all
-```
-
-Nothing is tagged: a multi-platform build cannot be loaded into the local image
-store.
+it on an AMD64 runner alone. Without the emulators registered, buildx fails on
+the platform this machine cannot run. Nothing is tagged either: a multi-platform
+build cannot be loaded into the local image store.
 
 ### Integration Testing
 - Test with latex-environment devcontainer
