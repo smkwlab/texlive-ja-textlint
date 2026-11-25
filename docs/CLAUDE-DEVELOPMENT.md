@@ -132,8 +132,13 @@ the platform this machine cannot run. Nothing is tagged either: a multi-platform
 build cannot be loaded into the local image store.
 
 The registration step runs a third-party image with `--privileged`, because it
-writes to the kernel's `binfmt_misc` registry for the whole host. Run it only on
-a machine you control, and skip it on a runner that already has the emulators
+writes to the kernel's `binfmt_misc` registry for the whole host -- the change
+outlives the container and affects every process on the machine. The image is
+[tonistiigi/binfmt](https://github.com/tonistiigi/binfmt), maintained by a buildx
+maintainer and the one Docker's own
+[multi-platform docs](https://docs.docker.com/build/building/multi-platform/)
+point at; check it yourself before running it. Run it only on a machine you
+control, and skip it on a runner that already has the emulators
 (CI never needs it: each architecture builds on a runner of that architecture).
 
 ### Integration Testing
