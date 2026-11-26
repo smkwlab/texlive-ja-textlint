@@ -15,9 +15,18 @@ docker build -f debian/Dockerfile -t texlive-ja-textlint:debian .
 # Build with custom tag
 docker build -f alpine/Dockerfile -t my-texlive:latest .
 
-# Multi-architecture build
-docker buildx build --platform linux/amd64,linux/arm64 -f alpine/Dockerfile -t ghcr.io/smkwlab/texlive-ja-textlint:2026e --push .
+# Check that both architectures build (Debian only)
+docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
+
+Debian only, because the Alpine variant is AMD64-only. The foreign architecture
+needs QEMU: Docker Desktop already ships it, while Docker Engine on Linux has to
+register it first -- see
+[Local Testing](CLAUDE-DEVELOPMENT.md#local-testing). Nothing is
+tagged: a multi-platform build cannot be loaded into the local image store. CI
+does not build this way either -- it builds each architecture on a runner of
+that architecture and assembles the manifests afterwards. See Registry
+Operations.
 
 ### Running Containers
 ```bash
@@ -32,15 +41,22 @@ docker run --rm -v $(pwd)/my-thesis:/workspace -w /workspace texlive-ja-textlint
 ```
 
 ### Registry Operations
+
+Publishing happens by pushing a git tag, which runs
+`.github/workflows/build-tag.yml`. The `create-manifests` job assembles
+`<tag>` and `latest` as AMD64=Alpine plus ARM64=Debian, and `<tag>-debian` and
+`debian` as both architectures of the Debian build.
+
+A local build covers one architecture, so tagging one as `:<tag>` and pushing
+it replaces the mixed manifest and leaves the other architecture resolving to
+an image never built for it. Pull only:
+
 ```bash
-# Tag for registry
-docker tag texlive-ja-textlint:alpine ghcr.io/smkwlab/texlive-ja-textlint:2026e
-
-# Push to GitHub Container Registry
-docker push ghcr.io/smkwlab/texlive-ja-textlint:2026e
-
 # Pull from registry
 docker pull ghcr.io/smkwlab/texlive-ja-textlint:2026e
+
+# Pull a specific base instead of the architecture-mixed tag
+docker pull ghcr.io/smkwlab/texlive-ja-textlint:2026e-debian
 ```
 
 ## LaTeX Compilation Examples

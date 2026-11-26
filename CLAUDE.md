@@ -6,15 +6,16 @@ Docker images for Japanese LaTeX compilation with textlint support. Foundational
 
 ### Build Images
 ```bash
-# Alpine variant (recommended)
+# Alpine variant (recommended; AMD64 only)
 docker build -f alpine/Dockerfile -t texlive-ja-textlint:alpine .
 
-# Debian variant
+# Debian variant (AMD64 and ARM64)
 docker build -f debian/Dockerfile -t texlive-ja-textlint:debian .
-
-# Multi-architecture build
-docker buildx build --platform linux/amd64,linux/arm64 -f alpine/Dockerfile -t ghcr.io/smkwlab/texlive-ja-textlint:2026e --push .
 ```
+
+Published images are built by CI, never from a local build -- see Registry
+Operations below. For a local multi-architecture check, see
+[Local Testing](docs/CLAUDE-DEVELOPMENT.md#local-testing).
 
 ### Test Compilation
 ```bash
@@ -26,10 +27,20 @@ docker run --rm -v $(pwd)/tests:/workspace -w /workspace texlive-ja-textlint:alp
 ```
 
 ### Registry Operations
+
+Images are published by pushing a git tag, which runs
+`.github/workflows/build-tag.yml`. Each architecture is built on a runner of
+that architecture, and the `create-manifests` job then assembles the tags:
+`<tag>` and `latest` mix AMD64=Alpine with ARM64=Debian, while `<tag>-debian`
+and `debian` carry both architectures of the Debian build.
+
+Do not tag a local image as `:<tag>` and push it by hand. A local build covers
+one architecture, so that replaces the mixed manifest and leaves the other
+architecture resolving to an image never built for it.
+
 ```bash
-# Push to registry (maintainers only)
-docker tag texlive-ja-textlint:alpine ghcr.io/smkwlab/texlive-ja-textlint:2026e
-docker push ghcr.io/smkwlab/texlive-ja-textlint:2026e
+# Pull what CI published
+docker pull ghcr.io/smkwlab/texlive-ja-textlint:2026e
 ```
 
 ## Image Structure
