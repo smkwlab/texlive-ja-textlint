@@ -20,8 +20,9 @@ docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
 
 Debian only, because the Alpine variant is AMD64-only. The foreign architecture
-needs QEMU, which has to be registered once first -- see
-[Local Testing](CLAUDE-DEVELOPMENT.md#local-testing) for the command. Nothing is
+needs QEMU: Docker Desktop already ships it, while Docker Engine on Linux has to
+register it first -- see
+[Local Testing](CLAUDE-DEVELOPMENT.md#local-testing). Nothing is
 tagged: a multi-platform build cannot be loaded into the local image store. CI
 does not build this way either -- it builds each architecture on a runner of
 that architecture and assembles the manifests afterwards. See Registry

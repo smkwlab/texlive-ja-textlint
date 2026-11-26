@@ -117,7 +117,9 @@ cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-alpine latex
 docker build -f debian/Dockerfile -t test-debian .
 cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-debian latexmk main.tex
 
-# Register the QEMU emulators (once per boot, before the build below).
+# Docker Desktop (macOS/Windows) ships the QEMU emulators, so skip this.
+# On Linux with Docker Engine, register them first (once per boot, before
+# the build below).
 # WARNING: --privileged gives this container host-level access, and the
 # image is third-party. Run it only on a machine you control.
 docker run --privileged --rm tonistiigi/binfmt --install all
@@ -127,21 +129,26 @@ docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
 
 Debian only, because the Alpine variant is AMD64-only -- which is why CI builds
-it on an AMD64 runner alone. Without the emulators registered, buildx fails on
+it on an AMD64 runner alone. Without the emulators available, buildx fails on
 the platform this machine cannot run. Nothing is tagged either: a multi-platform
 build cannot be loaded into the local image store.
 
-The registration step runs a third-party image with `--privileged`, because it
-writes to the kernel's `binfmt_misc` registry for the whole host -- the change
-outlives the container and affects every process on the machine, until the
-kernel's registrations are reset -- a reboot drops them, so this is a per-boot
-step, not a one-time install. The image is
+Docker Desktop ships the emulators with its Linux VM, so on macOS and Windows
+nothing has to be registered -- a foreign-architecture container just runs. Only
+Docker Engine on Linux needs the registration step, and neither does a runner
+that already has the emulators (CI never needs it: each architecture builds on a
+runner of that architecture).
+
+That step runs a third-party image with `--privileged`, because it writes to the
+kernel's `binfmt_misc` registry for the whole host -- the change outlives the
+container and affects every process on the machine, until the kernel's
+registrations are reset -- a reboot drops them, so this is a per-boot step, not a
+one-time install. The image is
 [tonistiigi/binfmt](https://github.com/tonistiigi/binfmt), maintained by a buildx
 maintainer and the one Docker's own
 [multi-platform docs](https://docs.docker.com/build/building/multi-platform/)
 point at; check it yourself before running it. Run it only on a machine you
-control, and skip it on a runner that already has the emulators
-(CI never needs it: each architecture builds on a runner of that architecture).
+control.
 
 ### Integration Testing
 - Test with latex-environment devcontainer
