@@ -116,28 +116,19 @@ cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-alpine latex
 # Build and test Debian variant  
 docker build -f debian/Dockerfile -t test-debian .
 cd tests && docker run --rm -v $(pwd):/workspace -w /workspace test-debian latexmk main.tex
+```
 
-# Docker Desktop (macOS/Windows) ships the QEMU emulators, so skip this.
-# On Linux with Docker Engine, register them first (once per boot, before
-# the build below).
+A multi-architecture check needs the QEMU emulators. Docker Desktop ships them
+with its Linux VM, so on macOS and Windows a foreign-architecture container just
+runs: skip the next block entirely. Only Docker Engine on Linux has to register
+them, once per boot, before the check:
+
+```bash
+# Linux + Docker Engine only -- skip this on Docker Desktop.
 # WARNING: --privileged gives this container host-level access, and the
 # image is third-party. Run it only on a machine you control.
 docker run --privileged --rm tonistiigi/binfmt --install all
-
-# Test multi-architecture compatibility (Debian only)
-docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
 ```
-
-Debian only, because the Alpine variant is AMD64-only -- which is why CI builds
-it on an AMD64 runner alone. Without the emulators available, buildx fails on
-the platform this machine cannot run. Nothing is tagged either: a multi-platform
-build cannot be loaded into the local image store.
-
-Docker Desktop ships the emulators with its Linux VM, so on macOS and Windows
-nothing has to be registered -- a foreign-architecture container just runs. Only
-Docker Engine on Linux needs the registration step, and neither does a runner
-that already has the emulators (CI never needs it: each architecture builds on a
-runner of that architecture).
 
 That step runs a third-party image with `--privileged`, because it writes to the
 kernel's `binfmt_misc` registry for the whole host -- the change outlives the
@@ -148,7 +139,20 @@ one-time install. The image is
 maintainer and the one Docker's own
 [multi-platform docs](https://docs.docker.com/build/building/multi-platform/)
 point at; check it yourself before running it. Run it only on a machine you
-control.
+control. A runner that already has the emulators needs none of this either -- CI
+never does: each architecture builds on a runner of that architecture.
+
+Then the check itself:
+
+```bash
+# Test multi-architecture compatibility (Debian only)
+docker buildx build --platform linux/amd64,linux/arm64 -f debian/Dockerfile .
+```
+
+Debian only, because the Alpine variant is AMD64-only -- which is why CI builds
+it on an AMD64 runner alone. Without the emulators available, buildx fails on
+the platform this machine cannot run. Nothing is tagged either: a multi-platform
+build cannot be loaded into the local image store.
 
 ### Integration Testing
 - Test with latex-environment devcontainer
